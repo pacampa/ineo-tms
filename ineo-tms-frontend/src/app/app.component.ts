@@ -65,7 +65,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //default login for demo
     this.apiClient.login("baudo", "12345678");
+
     this.userChangedSubscription = this.stateService.userChanged$.subscribe((user) => {
       this.currentUser = user;
     })

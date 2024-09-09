@@ -14,14 +14,15 @@
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
-    <div nz-row class="login-form-margin">
-      <div nz-col [nzSpan]="12">
-        <label for="remember">Remember me</label>
+    <div nz-row nzJustify="center" nzAlign="middle" class="login-form-margin">
+      <div nz-col [nzSpan]="12" class="login-form-col">
 
-        <input type="checkbox" id="remember" formControlName="remember">
-
+        <div class="login-form-item">
+          <input type="checkbox" id="remember" formControlName="remember" [disabled]="true">
+          <label for="remember">Remember me</label>
+        </div>
       </div>
-      <div nz-col [nzSpan]="12">
+      <div nz-col [nzSpan]="12" class="login-form-col">
         <a class="login-form-forgot" (click)="showLoginTip()">Forgot password</a>
       </div>
     </div>

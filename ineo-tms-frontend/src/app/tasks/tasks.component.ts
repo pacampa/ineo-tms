@@ -124,7 +124,9 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
   }
 
-
+  /**
+   * Prepare the form to add new task
+   */
   addNewTask() {
     this.taskForm.reset();
     this.taskForm.controls["status"].setValue(0);
@@ -132,8 +134,10 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.taskFormVisible = true;
   }
 
+  /**
+   * check for a task if is in user filter and match with the search field
+   */
   applyFilters(task:Task) {
-    //check for a task if is in user filter or match with the search field
     return (this.userFilter.length > 0 && this.userFilter.includes(task.assignedTo) || this.userFilter.length == 0) &&
       (this.titleFilter && task.title.includes(this.titleFilter) || this.titleFilter == null)
   }

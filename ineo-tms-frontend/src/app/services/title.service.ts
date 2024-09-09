@@ -5,6 +5,9 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class TitleService {
+  /**
+   * A service that maintain the title of the accessed section
+   */
 
   title:string = "";
   titleChanged$: Subject<string> = new Subject<string>();
