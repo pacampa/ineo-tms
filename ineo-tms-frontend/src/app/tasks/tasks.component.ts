@@ -35,7 +35,8 @@ export interface TaskUser {
   id:string,
   name:string,
   surname:string,
-  selected:boolean
+  selected:boolean,
+  color:string
 }
 
 @Component({

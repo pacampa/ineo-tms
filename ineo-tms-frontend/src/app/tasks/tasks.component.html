@@ -16,6 +16,7 @@
     <nz-avatar-group>
       <nz-avatar
         class="user-filter no-cursor no-text-sel {{userFilter.includes(user.id) ? 'user-in-filter' : null}}"
+        [style.background-color]="user.color"
         [nzText]="user | initials"
         nz-tooltip
         nzTooltipPlacement="top"
@@ -37,6 +38,7 @@
     <h4>{{task.title}}</h4>
     <nz-avatar
       class="no-cursor no-text-sel user-in-filter"
+      [style.background-color]="(task.assignedTo| userById)?.color"
       [nzText]="(task.assignedTo| userById) | initials"
       nz-tooltip
       nzTooltipPlacement="top"

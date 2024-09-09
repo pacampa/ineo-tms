@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   showLoginTip() {
     this.notification.blank(
       'Demo version',
-      'Available users are <b>dybala</b>, <b>raspadori</b>, <b>zaccagni</b>, <b>baudo</b>.<br/> For all, password is <b>12345678</b> ',
+      'Available users are:<br/> <b>spencer</b>, <b>cala</b>, <b>magalli</b>, <b>baudo</b>.<br/> For all, password is <b>12345678</b> ',
       { nzPlacement: 'top' }
     );
   }

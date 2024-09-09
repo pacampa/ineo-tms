@@ -1,9 +1,27 @@
-<div style="display: block;" style="width:600px; height: 300px">
-  <canvas baseChart
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          >
+<div class="dashboard-box centered-box" nz-flex [nzVertical]="true" nzGap="middle">
+  <div nz-flex [nzVertical]="false" nzGap="large">
+    <div><nz-statistic [nzValue]="(nUsers | number)!" [nzTitle]="'Team contributors'"></nz-statistic></div>
+    <div>
+      <nz-statistic [nzValue]="(doneLength| number)!"
+        [nzSuffix]="'/ ' + (todoLength + inProgressLength + doneLength)"
+        [nzTitle]="'Completed tasks'"
+        [nzValueStyle]="{ color: valueColor}"
+        >
+      </nz-statistic>
+    </div>
+  </div>
+  <div class="chart-box">
+    <canvas baseChart
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [legend]="barChartLegend"
+    >
   </canvas>
+  </div>
+
+
+
 </div>
+
+

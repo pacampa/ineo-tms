@@ -12,7 +12,8 @@ export interface User {
   username:string,
   name:string,
   surname:string,
-  password:string
+  password:string,
+  color:string
 }
 
 export interface Task {

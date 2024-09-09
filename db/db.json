@@ -2,81 +2,69 @@
   "users": [
     {
       "id": "1",
-      "username": "dybala",
-      "name": "Paulo",
-      "surname": "Dybala",
-      "password": "12345678"
+      "username": "spencer",
+      "name": "Bud",
+      "surname": "Spencer",
+      "password": "12345678",
+      "color": "#FF8C00"
     },
     {
       "id": "2",
-      "username": "raspadori",
-      "name": "Giacomo",
-      "surname": "Raspadori",
-      "password": "12345678"
+      "username": "cala",
+      "name": "Jerry",
+      "surname": "Calà",
+      "password": "12345678",
+      "color": "#1E90FF"
     },
     {
       "id": "3",
-      "username": "zaccagni",
-      "name": "Mattia",
-      "surname": "Zaccagni",
-      "password": "12345678"
+      "username": "magalli",
+      "name": "Giancarlo",
+      "surname": "Magalli",
+      "password": "12345678",
+      "color": "#32CD32 "
     },
     {
       "id": "4",
       "username": "baudo",
       "name": "Pippo",
       "surname": "Baudo",
-      "password": "12345678"
+      "password": "12345678",
+      "color": "#FF1493"
     }
   ],
   "tasks": [
     {
-      "title": "Primo colloquio INEO",
-      "description": "Realizza un semplice TMS",
-      "status": 0,
-      "createdBy": "1",
-      "assignedTo": "2",
-      "id": "1"
-    },
-    {
-      "title": "Refactoring delle API",
-      "description": "Riscrivere l'API di interazione col sistema X",
+      "title": "git",
+      "description": "add project to the new repository",
       "status": 2,
-      "createdBy": "1",
-      "assignedTo": "3",
-      "id": "2"
-    },
-    {
-      "title": "Refactoring dello stile",
-      "description": "Riscrivere la gui utilizzando NGZORRO",
-      "status": 0,
-      "createdBy": "1",
-      "assignedTo": "4",
-      "id": "3"
-    },
-    {
-      "title": "Altro task",
-      "description": "Lavora anche di Domenica",
-      "status": 0,
-      "createdBy": "1",
-      "assignedTo": "4",
-      "id": "4"
-    },
-    {
-      "title": "domenica mattina",
-      "description": "dovresti riposare, invece che stai facendo?",
-      "status": 0,
       "createdBy": "4",
       "assignedTo": "1",
-      "id": "f5d2"
+      "id": "52b4"
     },
     {
-      "title": "domenica pomeriggio",
-      "description": "ancora...",
-      "status": 2,
+      "title": "Dashboard",
+      "description": "Complete the overview dashboard",
+      "status": 0,
       "createdBy": "4",
       "assignedTo": "2",
-      "id": "2796"
+      "id": "cad5"
+    },
+    {
+      "title": "description editor",
+      "description": "Use a WYSIWYG editor to description field",
+      "status": 0,
+      "createdBy": "4",
+      "assignedTo": "3",
+      "id": "cceb"
+    },
+    {
+      "title": "interview",
+      "description": "complete the interview",
+      "status": 0,
+      "createdBy": "4",
+      "assignedTo": "4",
+      "id": "8be7"
     }
   ]
 }
