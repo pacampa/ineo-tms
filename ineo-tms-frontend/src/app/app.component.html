@@ -1,0 +1,54 @@
+<nz-layout>
+  <nz-sider nzCollapsible nzWidth="200px" (nzCollapsedChange)="toggleMenuCollapsed($event)">
+    <nz-avatar [nzSize]="64" nzText="MT" class="logo"></nz-avatar>
+    <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="menuCollapsed">
+      <li nz-submenu [nzTitle]="currentUser | fullName" nzIcon="user" *ngIf="currentUser">
+        <ul>
+          <li nz-menu-group [nzTitle]="currentUser | fullName" *ngIf="menuCollapsed">
+            <ul>
+              <li nz-menu-item>Logout</li>
+            </ul>
+          </li>
+          <li nz-menu-item *ngIf="!menuCollapsed" (click)="doLogout()">Logout</li>
+        </ul>
+      </li>
+      <li
+        *ngIf="!currentUser"
+        routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="menuCollapsed ? 'Login' : ''">
+        <span nz-icon nzType="login"></span>
+        <span>Login</span>
+      </li>
+      <li
+        [routerLink]="currentUser != null ? '/dashboard' : null" routerLinkActive="active" ariaCurrentWhenActive="page"
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzDisabled]="currentUser == null"
+        [nzTooltipTitle]="menuCollapsed ? 'Dashboard' : ''">
+        <span nz-icon nzType="dashboard"></span>
+        <span>Dashboard</span>
+      </li>
+      <li
+        [routerLink]="currentUser != null ? '/tasks' : null" routerLinkActive="active" ariaCurrentWhenActive="page"
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzDisabled]="currentUser == null"
+        [nzTooltipTitle]="menuCollapsed ? 'Tasks' : ''">
+        <span nz-icon nzType="interaction"></span>
+        <span>Tasks</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header><h1>{{sectionTitle}}</h1></nz-header>
+    <nz-content class="main-content"><router-outlet></router-outlet></nz-content>
+    <nz-footer>
+      <nz-footer>Magic TMS ©2024 Implement By Paolo Acampa</nz-footer>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

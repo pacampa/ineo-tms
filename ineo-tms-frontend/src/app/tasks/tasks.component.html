@@ -1,0 +1,159 @@
+<div nz-flex nzGap="middle">
+  <div>
+    <button nz-button nzType="primary" nzSize="default" (click)="addNewTask()">
+      <span nz-icon nzType="plus"></span>
+      Add new task
+    </button>
+  </div>
+  <div>
+    <nz-input-group [nzPrefix]="prefixTemplateSearch">
+      <input nz-input placeholder="Search a task"
+      [(ngModel)]="titleFilter" (ngModelChange)="checkTitleFilter($event)" />
+    </nz-input-group>
+    <ng-template #prefixTemplateSearch><span nz-icon nzType="search" nzTheme="outline"></span></ng-template>
+  </div>
+  <div>
+    <nz-avatar-group>
+      <nz-avatar
+        class="user-filter no-cursor no-text-sel {{userFilter.includes(user.id) ? 'user-in-filter' : null}}"
+        [nzText]="user | initials"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        [nzTooltipTitle]="user | fullName"
+        (click)="toggleUserToFilter(user)"
+        *ngFor="let user of stateService.users$ | async"></nz-avatar>
+    </nz-avatar-group>
+  </div>
+  <div>
+    <label nz-checkbox [(ngModel)]="sortByTitle" (ngModelChange)="sortTasks(0)" class="no-text-sel">Sort by title</label>
+  </div>
+  <div>
+    <label nz-checkbox [(ngModel)]="sortByUser" (ngModelChange)="sortTasks(1)" class="no-text-sel">Sort by user</label>
+  </div>
+</div>
+
+<ng-template #taskCard let-task="task">
+  <nz-card (click)="editTask(task)" class="task" [nzExtra]="extraTemplate">
+    <h4>{{task.title}}</h4>
+    <nz-avatar
+      class="no-cursor no-text-sel user-in-filter"
+      [nzText]="(task.assignedTo| userById) | initials"
+      nz-tooltip
+      nzTooltipPlacement="top"
+      [nzTooltipTitle]="(task.assignedTo| userById) | fullName"></nz-avatar>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <button nz-button
+      nz-popconfirm
+      (click)="$event.stopPropagation()"
+      nzPopconfirmTitle="Are you sure delete this task?"
+      (nzOnConfirm)="deleteTask(task)"
+      (nzOnCancel)="cancelDeleteTask()"
+      nzPopconfirmPlacement="topLeft"
+      nzType="default" nzSize="small" nzShape="circle">
+      <span nz-icon nzType="delete"></span>
+    </button>
+  </ng-template>
+</ng-template>
+
+<ng-template #taskSkeleton>
+  <nz-skeleton
+    class="task-skeleton"
+    [nzAvatar]="true"
+    [nzParagraph]="{ rows: 10 }"
+    [nzActive]="true"></nz-skeleton>
+</ng-template>
+
+<div nz-row class="task-grid" [nzGutter]="[3, 3]">
+  <div nz-col nzSpan="8">
+    <div class="column-content" cdkDropList id="droplist0" (cdkDropListDropped)="onDropTask($event, 0)" [cdkDropListConnectedTo]="['droplist1', 'droplist2']" sortingDisabled="true">
+      <ng-container *ngIf="taskInLoading == true">
+        <ng-container *ngTemplateOutlet="taskSkeleton"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="taskInLoading == false">
+        <h4>To do ({{toDoTasksLength$ | async}})</h4>
+        <nz-empty
+          *ngIf="(toDoTasksLength$ | async) == 0"
+          nzNotFoundContent="No task to do"></nz-empty>
+        <div *ngFor="let task of toDoTasks$ | async" cdkDrag [cdkDragData]="task" class="no-text-sel">
+          <ng-container *ngTemplateOutlet="taskCard; context: { task: task }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div nz-col nzSpan="8">
+    <div class="column-content" cdkDropList id="droplist1" (cdkDropListDropped)="onDropTask($event, 1)" [cdkDropListConnectedTo]="['droplist0', 'droplist2']" sortingDisabled="true">
+      <ng-container *ngIf="taskInLoading == true">
+        <ng-container *ngTemplateOutlet="taskSkeleton"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="taskInLoading == false">
+        <h4>In progress ({{inProgressTasksLength$ | async}})</h4>
+        <nz-empty
+          *ngIf="(inProgressTasksLength$ | async) == 0"
+          nzNotFoundContent="No task in progress"></nz-empty>
+        <div *ngFor="let task of inProgressTasks$ | async" cdkDrag [cdkDragData]="task" class="no-text-sel">
+          <ng-container *ngTemplateOutlet="taskCard; context: { task: task }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div nz-col nzSpan="8">
+    <div class="column-content" cdkDropList id="droplist2" (cdkDropListDropped)="onDropTask($event, 2)" [cdkDropListConnectedTo]="['droplist0', 'droplist1']" sortingDisabled="true">
+      <ng-container *ngIf="taskInLoading == true">
+        <ng-container *ngTemplateOutlet="taskSkeleton"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="taskInLoading == false">
+        <h4>Done ({{doneTasksLength$ | async}})</h4>
+        <nz-empty
+          *ngIf="(doneTasksLength$ | async) == 0"
+          nzNotFoundContent="No task completed"></nz-empty>
+        <div *ngFor="let task of doneTasks$ | async" cdkDrag [cdkDragData]="task" class="no-text-sel">
+          <ng-container *ngTemplateOutlet="taskCard; context: { task: task }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="taskFormVisible" (nzOnCancel)="taskFormHandleCancel()" (nzOnOk)="taskFormHandleOk()"
+  [nzTitle]="taskFormShownForAdd == true ? 'Add new task' : 'Edit task'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="taskForm">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please insert a title!">
+          <nz-input-group nzPrefixIcon="tag">
+            <input type="text" nz-input formControlName="title" placeholder="Title of task" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please insert a description!">
+          <nz-input-group nzPrefixIcon="form">
+            <input type="text" nz-input formControlName="description" placeholder="Description of the task" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="taskFormShownForAdd == false">
+        <nz-form-control nzErrorTip="Please select a task status!">
+          <nz-form-label [nzSpan]="6">Task status</nz-form-label>
+          <nz-radio-group formControlName="status" nzButtonStyle="solid">
+            <label nz-radio-button [nzValue]="0">To do</label>
+            <label nz-radio-button [nzValue]="1">In progress</label>
+            <label nz-radio-button [nzValue]="2">Done</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select a contributor!">
+          <nz-form-label [nzSpan]="6">Contributor</nz-form-label>
+          <nz-select formControlName="assignedTo" nzPlaceHolder="Select a contributor">
+            <ng-container *ngFor="let user of stateService.users$ | async">
+              <nz-option [nzValue]="user.id" [nzLabel]="user | fullName"></nz-option>
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
