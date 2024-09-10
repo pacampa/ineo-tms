@@ -15,7 +15,7 @@ npm install
 run following command to start db server:
 
 ```sh
-json-server --watch db.json
+npm run start:json-server
 ```
 
 ## Notes
